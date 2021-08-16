@@ -10,8 +10,10 @@ data class Payment(val creditCard: CreditCard, val amount: Int) {
 
     companion object {
         fun groupByCard(payments: List<Payment>): List<Payment> =
-                payments.groupBy { it.creditCard }
-                        .values
-                        .map { it.reduce(Payment::combine) }
+                payments.groupBy { it.creditCard } // -> <Card, Payment>
+                        .values // <Payment> [Payment(cc1, 5), Payment(cc1, 1), Payment(cc2, 5)]
+                        .map { it.reduce(Payment::combine) }    // scan, and if payments has the same card, we combine them
+                                                                // to one big payment
+                                                                // [Payment(cc1, 6), Payment(cc2, 5)]
     }
 }
